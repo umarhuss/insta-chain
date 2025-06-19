@@ -39,15 +39,15 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
         expect(instachain.address).to.not.equal(0);
 
         // create a new post
-
         const caption = 'This is a test post, id should be 2';
         const location = 'London';
         const imageHash = 'northeastern.psg';
 
         await instachain.createPost(caption, location, imageHash);
 
-        // Check if the post count is 2
+        // Check if the post count is 1
         const postCount = await instachain.postCount();
+        // postCount is a BigNumber, so we need to convert it to a number
         expect(postCount.toNumber()).to.equal(1);
 
     })
