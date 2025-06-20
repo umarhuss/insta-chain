@@ -51,4 +51,31 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
         expect(postCount.toNumber()).to.equal(1);
 
     })
+
+    // Test to check if post is liked correctly
+    it('should like a post', async function(){
+        // Get the owner of the contract
+        const [owner] = await ethers.getSigners();
+        // Call the instachain contract
+         const Instachain = await ethers.getContractFactory('InstaChain');
+        // Deploy the contract
+        const instachain = await Instachain.deploy();
+        // Verify the contact is deployed
+        await instachain.deployed();
+        expect(instachain.address).to.not.equal(0);
+
+        // Create a new post
+        const caption = "This is a post to test like";
+        const location = "Boston";
+        const imageHash = 'imagehash123';
+        await instachain.createPost(caption,location,imageHash)
+
+
+        // Like the post
+        const liked = await instachain.likePost(1);
+
+        // Check if the post is liked correctly
+        const is_liked = await instachain.likedPosts(owner.address, 1);
+        expect(is_liked).to.equal(true);
+    })
 })
