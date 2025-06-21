@@ -19,6 +19,9 @@ contract InstaChain {
     // Map a person to posts they have liked
     mapping(address => mapping(uint256 => bool)) public likedPosts;
 
+    // Mapping to store liked posts by user for easy access
+    mapping(address => uint256[]) public likedPostsByUser;
+
     // Map a person to a post they have created
     mapping(address => uint256[]) public userPosts;
 
@@ -57,6 +60,9 @@ contract InstaChain {
 
         // Increment the likes count for the post
         likesCount[_postId]++;
+
+        // Push the post id to liked posts by user mapping
+        likedPostsByUser[msg.sender].push(_postId);
     }
     // Unlike post function
     function unlikePost(uint256 _postId) public {
@@ -78,6 +84,9 @@ contract InstaChain {
         return userPosts[_user];
     }
     // Return the liked posts of a user
+    function getLikedPosts(address _user) public view returns (uint256[]) {
+        return likedPostsByUser[_user];
+    }
 
     // Comment on a post
 }
