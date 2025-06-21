@@ -53,7 +53,7 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
     })
 
     // Test to check if post is liked correctly
-    it('should like a post', async function(){
+    it('should like a post and increment like count', async function(){
         // Get the owner of the contract
         const [owner] = await ethers.getSigners();
         // Call the instachain contract
@@ -69,13 +69,15 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
         const location = "Boston";
         const imageHash = 'imagehash123';
         await instachain.createPost(caption,location,imageHash)
-
-
         // Like the post
-        const liked = await instachain.likePost(1);
+        await instachain.likePost(1);
 
         // Check if the post is liked correctly
         const is_liked = await instachain.likedPosts(owner.address, 1);
         expect(is_liked).to.equal(true);
+
+        // check if the like count is incremented
+        const likeCount = await instachain.likesCount(1);
+        expect(likeCount.toNumber()).to.equal(1);
     })
 })
