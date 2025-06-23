@@ -80,4 +80,73 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
         const likeCount = await instachain.likesCount(1);
         expect(likeCount.toNumber()).to.equal(1);
     })
+
+    // Test to check is post is unliked correctly
+    it('should unlike the post and decrement like count', async function(){
+        // Get the owner of the contract
+        const [owner] = await ethers.getSigners();
+        // Call the instachain contract
+         const Instachain = await ethers.getContractFactory('InstaChain');
+        // Deploy the contract
+        const instachain = await Instachain.deploy();
+        // Verify the contact is deployed
+        await instachain.deployed();
+        expect(instachain.address).to.not.equal(0);
+
+        // Create a new post
+        const caption = "This is a post to test like";
+        const location = "Boston";
+        const imageHash = 'imagehash123';
+        await instachain.createPost(caption,location,imageHash)
+        // Like the post
+        await instachain.likePost(1)
+        // Check if the post is liked correctly
+        const is_liked = await instachain.likedPosts(owner.address, 1);
+        expect(is_liked).to.equal(true);
+
+        // check if the like count is incremented
+        const likeCount = await instachain.likesCount(1);
+        expect(likeCount.toNumber()).to.equal(1);
+
+        // unlike the post
+        await instachain.unlikePost(1)
+
+        // check the post is unliked
+        const is_unliked = await instachain.likedPosts(owner.address,1);
+        expect(is_unliked).to.equal(false);
+
+        // Check if the like count is decremented
+        const newLikeCount = await instachain.likesCount(1);
+        expect(newLikeCount.toNumber()).to.equal(0);
+    })
+
+    // Test the return of user posts
+    it('should return user posts', async function(){
+        // Get the owner of the contract
+        const [owner] = await ethers.getSigners();
+        // Call the instachain contract
+        const Instachain = await ethers.getContractFactory('InstaChain');
+        // Deploy the contract
+        const instachain = await Instachain.deploy();
+        // Verify the contact is deployed
+        await instachain.deployed();
+        expect(instachain.address).to.not.equal(0);
+
+        // Create a new post
+        const caption = "This is a post to test user posts";
+        const location = "Boston";
+        const imageHash = 'imagehash123';
+        await instachain.createPost(caption,location,imageHash)
+
+        // Get the user posts
+        const userPosts = await instachain.getUserPosts(owner.address);
+
+        // Check it the user post is added correctly
+        expect(userPosts.length).to.equal(1);
+        expect(userPosts[0].toNumber()).to.equal(1);
+
+        // Check the post details
+
+    })
+
 })

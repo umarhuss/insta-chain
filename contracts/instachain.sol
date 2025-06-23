@@ -12,8 +12,18 @@ contract InstaChain {
         string ipfsHash;
     }
 
+    // Comment struct
+    struct Comment {
+        uint256 id; // Unique ID for the comment
+        address commenter;
+        string comment;
+        uint256 timestamp;
+        uint256 replyTo; //ID of the comment being replied to
+    }
     // Map id to post for storage
     uint256 public postCount;
+
+    // Map post id to post
     mapping(uint256 => Post) public posts;
 
     // Map a person to posts they have liked
@@ -27,6 +37,23 @@ contract InstaChain {
 
     // Count number of likes on a post mapping
     mapping(uint256 => uint256) public likesCount;
+
+    // Mapping comments to posts
+    mapping(uint256 => Comment[]) public postComments;
+
+    // Counter to keep track of comments
+    uint public commentCount;
+
+    // Event to emit when a comment is added
+    // indexed parameters are used to filter events in the UI
+    event CommentAdded(
+        uint256 indexed postId,
+        address indexed commenter,
+        uint indexed commentId,
+        string comment,
+        uint256 timestamp,
+        uint256 replyTo
+    );
 
     // Function to create a new post
     function createPost(
@@ -80,13 +107,51 @@ contract InstaChain {
     }
 
     // Return the posts of a user
-    function getUserPosts(address _user) public view returns (uint256[]) {
+    function getUserPosts(
+        address _user
+    ) public view returns (uint256[] memory) {
         return userPosts[_user];
     }
+
+    // Custom getter function to get post by id for frontend
+
     // Return the liked posts of a user
-    function getLikedPosts(address _user) public view returns (uint256[]) {
-        return likedPostsByUser[_user];
+    function getLikedPosts(
+        address _user
+    ) public view returns (uint256[] memory) {
+        return likedPostsByUser[_user]; // on chain functionality
     }
 
     // Comment on a post
+    function commentOnPost(
+        uint256 _postId,
+        string memory _comment,
+        uint256 _replyTo
+    ) public {
+        // Check if post exists
+        require(_postId > 0 && _postId <= postCount, "Post does not exist");
+        require(bytes(_comment).length > 0, "Comment cannot be empty");
+        // Increment the comment count
+        commentCount++;
+        // Create a new comment
+        Comment memory newComment = Comment(
+            commentCount, //
+            msg.sender,
+            _comment,
+            block.timestamp,
+            _replyTo
+        );
+        // Add comment to post comments mapping
+        postComments[_postId].push(newComment);
+
+        // Emit the comment added event
+        emit CommentAdded(
+            _postId,
+            msg.sender,
+            commentCount,
+            _comment,
+            block.timestamp,
+            _replyTo
+        );
+    }
 }
