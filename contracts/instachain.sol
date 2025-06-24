@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 contract InstaChain {
     // Struct to hold the post
     struct Post {
+        uint256 id; // Unique ID for the post
         address author;
         string caption;
         uint256 timestamp;
@@ -62,7 +63,9 @@ contract InstaChain {
         string memory _ipfsHash
     ) public {
         postCount++;
-        posts[postCount] = Post(
+        uint256 newPostId = postCount;
+        posts[newPostId] = Post(
+            newPostId,
             msg.sender,
             _caption,
             block.timestamp,
@@ -114,7 +117,30 @@ contract InstaChain {
     }
 
     // Custom getter function to get post by id for frontend
-
+    function getPost(
+        uint _postId
+    )
+        public
+        view
+        returns (
+            uint id,
+            address author,
+            string memory caption,
+            uint timestamp,
+            string memory location,
+            string memory ipfsHash
+        )
+    {
+        Post memory post = posts[_postId];
+        return (
+            post.id,
+            post.author,
+            post.caption,
+            post.timestamp,
+            post.location,
+            post.ipfsHash
+        );
+    }
     // Return the liked posts of a user
     function getLikedPosts(
         address _user
@@ -153,5 +179,11 @@ contract InstaChain {
             block.timestamp,
             _replyTo
         );
+    }
+    // Get the comments for the post
+    function getComments(
+        uint256 _postId
+    ) public view returns (Comment[] memory) {
+        return postComments[_postId];
     }
 }

@@ -121,7 +121,7 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
     })
 
     // Test the return of user posts
-    it('should return user posts', async function(){
+    it('should return user posts and details', async function(){
         // Get the owner of the contract
         const [owner] = await ethers.getSigners();
         // Call the instachain contract
@@ -146,7 +146,55 @@ describe('Instachain', function (){ // function as we are wrapping the test suit
         expect(userPosts[0].toNumber()).to.equal(1);
 
         // Check the post details
+        const post = await instachain.getPost(1);
+        expect(post.caption).to.equal(caption);
+        expect(post.location).to.equal(location);
+        expect(post.ipfsHash).to.equal(imageHash)
 
+    })
+
+    // Test commenting on posts
+    it('should comment on a post and increment comment count', async function(){
+        // Get the owner of the contract
+        const [owner] = await ethers.getSigners();
+
+        // Call the instachain contract
+        const Instachain = await ethers.getContractFactory('InstaChain');
+
+        // Deploy the contract
+        const instachain = await Instachain.deploy();
+
+        // Verify the contact is deployed
+        await instachain.deployed();
+        expect(instachain.address).to.not.equal(0);
+
+        // Create a new post
+        const caption = "This is a post to test user commenting on posts";
+        const location = "Dubai";
+        const imageHash = 'imagehash123';
+        await instachain.createPost(caption,location,imageHash)
+
+        // Check post id
+        const post = await instachain.getUserPosts(owner.address);
+        expect(post[0].toNumber()).to.equal(1);
+
+        // Comment on the post
+        const comment = 'This is a comment on the post';
+        await instachain.commentOnPost(1, comment, 0);
+
+        // Check the comment count and comment details
+        const commentCount = await instachain.commentCount();
+        expect(commentCount.toNumber()).to.equal(1);
+        const comments = await instachain.getComments(1);
+        expect(comments[0].comment).to.equal(comment);
+
+        // Reply to the comment
+        const reply = 'This is a reply to the comment';
+        await instachain.commentOnPost(1, reply, 1);
+
+        // Check the reply to comment is correct
+        const replies = await instachain.getComments(1);
+        expect(replies[1].comment).to.equal(reply);
     })
 
 })
