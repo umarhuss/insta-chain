@@ -1,11 +1,19 @@
 import React from 'react';
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "./routes/AppRouter.tsx";
+import Navbar from './components/Navbar.tsx';
 import ConnectWallet from './components/connectWallet.tsx';
+
+
 function App() {
   return (
+    <BrowserRouter>
       <div>
-        <h1>Instachain</h1>
-          <ConnectWallet />
+        <ConnectWallet />
+        <Navbar />
+        <AppRouter />
       </div>
+      </BrowserRouter>
   );
 }
 
