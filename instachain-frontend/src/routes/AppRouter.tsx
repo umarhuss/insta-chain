@@ -1,19 +1,21 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from '../pages/Home.tsx';
-import Profile from '../pages/profile';
-import Posts from '../pages/post.tsx';
-import CreatePost from '../pages/createPost.tsx';
-import Feed from '../pages/Feed.tsx';
+import useWallet from "../hooks/useWallet";
+import Home from "../pages/Home";
+import AuthenticatedApp from "../AuthenticatedApp";
 
-const AppRouter = () => {
-    return (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/feed" element={<Feed />} />
-        </Routes>
-    );
+const AppRouter: React.FC = () => {
+  const { walletAddress } = useWallet();
+
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      {walletAddress && (
+        <Route path="/*" element={<AuthenticatedApp />} />
+      )}
+    </Routes>
+  );
 };
+
 export default AppRouter;
+

@@ -1,20 +1,18 @@
 import React from 'react';
 import { BrowserRouter } from "react-router-dom";
-import AppRouter from "./routes/AppRouter.tsx";
-import Navbar from './components/Navbar.tsx';
-import ConnectWallet from './components/connectWallet.tsx';
+import useWallet from './hooks/useWallet';
+import AuthenticatedApp from './AuthenticatedApp';
+import Home from './pages/Home';
 
+const App: React.FC = () => {
+  const { walletAddress } = useWallet();
 
-function App() {
   return (
     <BrowserRouter>
-      <div>
-        <ConnectWallet />
-        <Navbar />
-        <AppRouter />
-      </div>
-      </BrowserRouter>
+      {walletAddress ? <AuthenticatedApp /> : <Home />}
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
+
