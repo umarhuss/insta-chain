@@ -1,8 +1,10 @@
 import React from "react";
+import PostCard from "../components/postCard";
 
 const Feed: React.FC =() => {
     const Posts = [
         {
+            postId: 1,
             author: "0x1234...abcd",
             imageUrl: "https://via.placeholder.com/300",
             caption: "Hello from the blockchain!",
@@ -10,6 +12,7 @@ const Feed: React.FC =() => {
             likes: 123,
         },
         {
+            postId: 2,
             author: "0x5678...efgh",
             imageUrl: "https://via.placeholder.com/300",
             caption: "Another day, another block!",
@@ -17,6 +20,7 @@ const Feed: React.FC =() => {
             likes: 456,
         },
         {
+            postId: 3,
             author: "0x9012...ijkl",
             imageUrl: "https://via.placeholder.com/300",
             caption: "Exploring the metaverse!",
@@ -29,14 +33,8 @@ const Feed: React.FC =() => {
         <div>
             <h2>Feed</h2>
             <div>
-                {Posts.map((post, index) =>(
-                    <div key = {index}>
-                        <img src={post.imageUrl} alt={post.caption} />
-                        <p>{post.caption}</p>
-                        <p>By: {post.author}</p>
-                        <p>❤️ {post.likes}</p>
-                        <p>Posted on: {new Date(post.timestamp).toLocaleDateString()}</p>
-                    </div>
+                {Posts.map((post) =>(
+                    <PostCard key={post.postId} post={post} />
                 ))}
             </div>
         </div>
