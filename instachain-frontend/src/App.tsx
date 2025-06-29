@@ -7,9 +7,11 @@ import Home from './pages/Home';
 const App: React.FC = () => {
   const { walletAddress } = useWallet();
 
+  console.log("Wallet address:", walletAddress);
   return (
     <BrowserRouter>
-      {walletAddress ? <AuthenticatedApp /> : <Home />}
+    {      /* Render AuthenticatedApp if walletAddress is not null, otherwise render Home */}
+      {walletAddress !== null ? <AuthenticatedApp /> : <Home />}
     </BrowserRouter>
   );
 };

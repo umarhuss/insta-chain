@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Feed from "../src/pages/Feed";
 import Profile from "../src/pages/profile";
 import CreatePost from "../src/pages/createPost";
@@ -11,9 +11,10 @@ const AuthenticatedApp: React.FC = () => {
     <>
       <Navbar />
       <Routes>
+        <Route path="/" element={<Navigate to="/feed" />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/create-post" element={<CreatePost />} />
+        <Route path="/createpost" element={<CreatePost />} />
         <Route path="/posts" element={<Posts />} />
       </Routes>
     </>

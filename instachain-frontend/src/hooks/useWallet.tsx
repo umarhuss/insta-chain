@@ -20,7 +20,7 @@ export default function useWallet() {
             // Check if the user is already connected to a wallet
             try {
                 // if so setwalletAddress to the first account in the array
-                const accounts = window.ethereum.request({ method: 'eth_accounts'}) as string[];
+                const accounts = await window.ethereum.request({ method: 'eth_accounts'}) as string[];
                 if (accounts.length > 0){
                     setWalletAddress(accounts[0]);
                 }
