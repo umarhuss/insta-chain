@@ -1,7 +1,34 @@
+import { useState } from "react";
 import PostCard from "../components/postCard";
-import type { Post } from "../types";
+import type { Post, Comment } from "../types";
 
 const Feed: React.FC =() => {
+    // Use state to handle new comments
+    const [comments, setComments] = useState<Comment[]>([]) // Will be comments list and initially be empty
+
+    const handleAddComment = (postId: number, commentText: string) => {
+        const newComment: Comment = {
+            commentId: Date.now(), // temp unique Id for now
+            commenter: 'Umar', // will be wallet or username
+            comment: commentText,
+            timestamp: new Date().toISOString(),
+            postId: postId
+        };
+
+        // update the comment array using the setComments function
+        setComments(prev => [...prev, newComment])
+    };
+
+    // Use state to handle the posts that will be empty
+    const [posts, setPosts] = useState<Post[]>([])
+
+    const getAllPosts = (postId, caption) =>{
+        const newPost : Post = {
+
+        }
+    }
+
+    // Dummy posts
     const Posts: Post[] = [
         {
             postId: 1,
@@ -32,41 +59,21 @@ const Feed: React.FC =() => {
         }
     ]
 
-    const comments = [
-        {
-            commentId: 1,
-            commenter: "0xABCD...1234",
-            comment: "This is amazing!",
-            timestamp: "2025-06-30T13:00:00Z",
-            postId: 1,
-        },
-        {
-            commentId: 2,
-            commenter: "0xEFGH...5678",
-            comment: "Love this post.",
-            timestamp: "2025-06-30T13:05:00Z",
-            postId: 2,
-        },
-        {
-            commentId: 3,
-            commenter: "0xWXYZ...9999",
-            comment: "So cool!",
-            timestamp: "2025-06-30T13:10:00Z",
-            postId: 3,
-        },
-    ];
-
         return (
         <div>
             <h2>Feed</h2>
             <div>
                 {Posts.map((post) =>{
-                    // Filter  comment to be ones that are linked to posts
+                    // Filter comment to be ones that are linked to posts
                     const commentsForPost = comments.filter(
                         (comment) => comment.postId == post.postId
                     );
 
-                    return <PostCard key={post.postId} post={post} comments={commentsForPost} />
+                    return <PostCard
+                    key={post.postId}
+                    post={post}
+                    comments={commentsForPost}
+                    handleAddComment = {handleAddComment} />
                 })}
             </div>
         </div>
