@@ -14,7 +14,7 @@ const AuthenticatedApp: React.FC = () => {
         <Route path="/" element={<Navigate to="/feed" />} />
         <Route path="/feed" element={<Feed />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/createpost" element={<CreatePost />} />
+        <Route path="/createPost" element={<CreatePost />} />
         <Route path="/posts" element={<Posts />} />
       </Routes>
     </>

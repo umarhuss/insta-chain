@@ -42,6 +42,9 @@ contract InstaChain {
     // Mapping comments to posts
     mapping(uint256 => Comment[]) public postComments;
 
+    // Mapping for friends
+    mapping(address => mapping(address => bool)) public areFriends;
+
     // Counter to keep track of comments
     uint public commentCount;
 
@@ -185,5 +188,45 @@ contract InstaChain {
         uint256 _postId
     ) public view returns (Comment[] memory) {
         return postComments[_postId];
+    }
+
+    // Function to get the post of users and post of there friend
+    function getUserAndFriendsPosts(
+        address _user
+    ) public view returns (Post[] memory) {
+        uint256 matchCount = 0;
+        // Loop through all posts and get the number of matches
+        for (uint256 i = 1; i <= postCount; i++) {
+            // retrieve the Post struct in the posts mapping
+            Post storage post = posts[i];
+            // If logic
+            if (post.author == _user || areFriends[_user][post.author]) {
+                matchCount++;
+            }
+        }
+
+        // Create a memory array fo the match size to fill
+        Post[] memory results = new Post[](matchCount);
+        uint256 idx = 0;
+        for (uint256 i = 1; i <= postCount; i++) {
+            // retrieve the Post struct in the posts mapping
+            Post storage post = posts[i];
+            // Check is the user and person are friends
+            if (post.author == _user || areFriends[_user][post.author]) {
+                results[idx] = post;
+                idx++;
+            }
+        }
+        return results;
+    }
+
+    // Add friends functionality
+    function addFriends(address _currentUser, address _friend) public {
+        require(_currentUser != _friend, "You cannot add yourself");
+        areFriends[_currentUser][_friend] = true;
+    }
+    // Remove friends functionality
+    function removeFriend(address _currentUser, address _friend) public {
+        areFriends[_currentUser][_friend] = false;
     }
 }
