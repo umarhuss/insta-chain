@@ -38,60 +38,75 @@ const PostCard: React.FC<props> = ({post, comments, handleAddComment})=>{
         if (!textarea.trim())
             return;
         // Else add call the handleAddComment function
-        handleAddComment(post.postId, textarea)
+        handleAddComment(post.id, textarea)
         // console.log for debugging
         console.log('comment successfully submitted:\n',textarea)
         // Clear the text area
         setTextarea("")
     }
+    // Get file extension
+    const getExtension = (url: string) => {
+        return url?.split('.').pop()?.toLowerCase() || "";
+    };
+
+    const ext = getExtension(post.ipfsHash || "");
+    const mediaUrl = `https://gateway.pinata.cloud/ipfs/${post.ipfsHash}`;
 
 
-    return (
+
+  return (
+    <div className="post-card">
+      {/* Render image or video */}
+      {ext === "mp4" || ext === "webm" ? (
+        <video width="100%" controls>
+          <source src={mediaUrl} type={`video/${ext}`} />
+          Your browser does not support the video tag.
+        </video>
+      ) : (
+        <img src={mediaUrl} alt={post.caption} width="100%" />
+      )}
+
+      {/* Post content */}
+      <p>{post.caption}</p>
+      <p>By: {post.author}</p>
+      <p>Posted on: {new Date(Number(post.timestamp)).toLocaleDateString()}</p>
+
+      <button onClick={togglelikes}>
+        {hasLiked ? "💔 Unlike" : "❤️ Like"}
+      </button>
+      <p>❤️ {likes}</p>
+
+      {/* Comments */}
+      <div>
+        <h4>Comments</h4>
+        {latestComments.map((comment) => (
+          <p key={comment.commentId}>
+            <strong>{comment.commenter}:</strong> {comment.comment}
+          </p>
+        ))}
+
+        {/* Add a comment */}
         <div>
-            {/* Add post content */}
-            {/* For debugging only: <p>ID: {post.postId}</p> */}
-            <img src={post.imageUrl} alt={post.caption} />
-            <p>{post.caption}</p>
-            <p>By: {post.author}</p>
-            <p>Posted on: {new Date(post.timestamp).toLocaleDateString()}</p>
-            <button onClick = {togglelikes}>
-                {hasLiked? '💔 Unlike' : '❤️ Like'}
-            </button>
-            <p> ❤️ {likes}</p>
-
-            {/* Comments section */}
-            <div>
-                <h4>Comments</h4>
-                {latestComments.map((comment) => (
-                <p key={comment.commentId}>
-                    <strong>{comment.commenter}:</strong> {comment.comment}
-                </p>
-                ))}
-
-                <div>
-                    <textarea
-                    value={textarea} onChange={(e)=> setTextarea (e.target.value)} placeholder="Write a comment..."
-                    onKeyDown={(e) =>{
-                        if (e.key === "Enter" && !e.shiftKey){
-                            e.preventDefault();
-                            addComment();
-                        }
-                    }}
-                    />
-                    <button onClick={addComment}>
-                        <Send />
-                    </button>
-                </div>
-            </div>
-
+          <textarea
+            value={textarea}
+            onChange={(e) => setTextarea(e.target.value)}
+            placeholder="Write a comment..."
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                addComment();
+              }
+            }}
+          />
+          <button onClick={addComment}>
+            <Send />
+          </button>
         </div>
-
-
-    );
+      </div>
+    </div>
+  );
 };
 
-
-export default PostCard
-
+export default PostCard;
 
 

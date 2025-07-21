@@ -31,6 +31,26 @@ export default function useWallet() {
         // Call the function to check wallet connection
         checkWalletConnection();
     }, []);
+    // Listen for account changes (e.g., when user switches in MetaMask)
+    useEffect(() => {
+        if (!window.ethereum) return;
+
+        const handleAccountsChanged = (accounts: string[]) => {
+            if (accounts.length > 0) {
+                setWalletAddress(accounts[0]);
+                console.log("🔄 Account changed to:", accounts[0]);
+            } else {
+                setWalletAddress(null);
+                console.log("🚫 Wallet disconnected");
+            }
+        };
+
+        window.ethereum.on("accountsChanged", handleAccountsChanged);
+
+        return () => {
+            window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+        };
+    }, []);
     // Function to connect to the wallet
     const connectWallet = async () => {
         // Check if metaMask is installed

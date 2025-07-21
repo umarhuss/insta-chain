@@ -78,7 +78,7 @@ contract InstaChain {
         // Add post id to user posts mapping
         userPosts[msg.sender].push(postCount);
     }
-    // Function or like post
+    // Function to like post
     function likePost(uint _postId) public {
         // Check if post exists
         require(_postId > 0 && _postId <= postCount, "Post does not exist");
@@ -191,32 +191,69 @@ contract InstaChain {
     }
 
     // Function to get the post of users and post of there friend
+    // function getUserAndFriendsPosts(
+    //     address _user
+    // ) public view returns (Post[] memory) {
+    //     if (postCount == 0) {
+    //         return new Post[](0);
+    //     }
+    //     uint256 matchCount = 0;
+    //     // Loop through all posts and get the number of matches
+    //     for (uint256 i = 1; i <= postCount; i++) {
+    //         // retrieve the Post struct in the posts mapping
+    //         Post storage post = posts[i];
+    //         // If logic
+    //         if (post.author == _user || areFriends[_user][post.author]) {
+    //             matchCount++;
+    //         }
+    //     }
+
+    //     // Create a memory array fo the match size to fill
+    //     Post[] memory results = new Post[](matchCount);
+    //     uint256 idx = 0;
+    //     for (uint256 i = 1; i <= postCount; i++) {
+    //         // retrieve the Post struct in the posts mapping
+    //         Post storage post = posts[i];
+    //         // Check is the user and person are friends
+    //         if (post.author == _user || areFriends[_user][post.author]) {
+    //             results[idx] = post;
+    //             idx++;
+    //         }
+    //     }
+    //     return results;
+    // }
     function getUserAndFriendsPosts(
         address _user
     ) public view returns (Post[] memory) {
+        if (postCount == 0) {
+            Post[] memory emptyPosts = new Post[](0);
+            return emptyPosts;
+        }
         uint256 matchCount = 0;
-        // Loop through all posts and get the number of matches
         for (uint256 i = 1; i <= postCount; i++) {
-            // retrieve the Post struct in the posts mapping
             Post storage post = posts[i];
-            // If logic
             if (post.author == _user || areFriends[_user][post.author]) {
                 matchCount++;
             }
         }
 
-        // Create a memory array fo the match size to fill
         Post[] memory results = new Post[](matchCount);
         uint256 idx = 0;
         for (uint256 i = 1; i <= postCount; i++) {
-            // retrieve the Post struct in the posts mapping
             Post storage post = posts[i];
-            // Check is the user and person are friends
             if (post.author == _user || areFriends[_user][post.author]) {
-                results[idx] = post;
+                Post memory temp;
+                temp.id = post.id;
+                temp.author = post.author;
+                temp.caption = post.caption;
+                temp.timestamp = post.timestamp;
+                temp.location = post.location;
+                temp.ipfsHash = post.ipfsHash;
+                results[idx] = temp;
                 idx++;
             }
         }
+
         return results;
     }
 
