@@ -190,6 +190,21 @@ contract InstaChain {
         return postComments[_postId];
     }
 
+    // Function to get count of likes on a post
+    function getLikeCount(uint256 postId) public view returns (uint256) {
+        require(postId > 0 && postId <= postCount, "Invalid postId");
+        return likesCount[postId];
+    }
+
+    // Getter function to get the users liked posts for frontend
+    function hasUserLikedPost(
+        address user,
+        uint256 postId
+    ) public view returns (bool) {
+        require(postId > 0 && postId <= postCount, "Invalid postId");
+        return likedPosts[user][postId];
+    }
+
     // Function to get the post of users and post of there friend
     // function getUserAndFriendsPosts(
     //     address _user

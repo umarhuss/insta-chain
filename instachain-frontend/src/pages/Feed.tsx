@@ -32,8 +32,40 @@ const Feed: React.FC = () => {
       const contract = await getContract(signer);
       if (!walletAddress) return;
       const userAddress = await signer.getAddress();
-      const postForFeed = await contract.getUserAndFriendsPosts(userAddress);
-      setPosts(postForFeed);
+      // const postForFeed = await contract.getUserAndFriendsPosts(userAddress);
+      const rawPosts = await contract.getUserAndFriendsPosts(userAddress);
+
+      const parsedPosts = rawPosts.map((raw: any) => ({
+        id: Number(raw[0]),
+        author: raw[1],
+        caption: raw[2],
+        timestamp: Number(raw[3]),
+        location: raw[4],
+        ipfsHash: raw[5],
+      }));
+
+      // Set posts with likes
+      const postsWithLikes : Post[] = await Promise.all(
+        parsedPosts.map(async(post:Post) => {
+          console.log("parsed post:", post);
+          try{
+            const[likes, hasLiked] = await Promise.all([
+              contract.getLikeCount(post.id),
+              contract.hasUserLikedPost(userAddress,post.id)
+            ]);
+            return {
+              ...post,
+              likes: Number(likes),
+              hasLiked
+            };
+          } catch (error) {
+              console.warn(`Skipping post ${post.id} due to error:`, error);
+              return null; // Fallback
+          }
+        })
+      );
+
+      setPosts(postsWithLikes.filter((post) => post !== null));
     } catch (error) {
       console.error("Error loading posts:", error);
     }
@@ -59,13 +91,15 @@ const Feed: React.FC = () => {
         <p>No posts yet. Follow someone or create your own post!</p>
       ) : (
         <div className="post-list">
-          {posts.map((post) => {
+          {posts.map((post, idx) => {
+            if (!post) return null; // Skip if post is null
+
             const commentsForPost = comments.filter(
               (comment) => comment.postId === post.id
             );
             return (
               <PostCard
-                key={post.id}
+                key={post.id || idx} // fallback to index if id is not available
                 post={post}
                 comments={commentsForPost}
                 handleAddComment={handleAddComment}

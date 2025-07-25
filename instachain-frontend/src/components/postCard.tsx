@@ -69,7 +69,7 @@ const PostCard: React.FC<props> = ({post, comments, handleAddComment})=>{
       {/* Post content */}
       <p>{post.caption}</p>
       <p>By: {post.author}</p>
-      <p>Posted on: {new Date(Number(post.timestamp)).toLocaleDateString()}</p>
+      <p>Posted on: {post.timestamp ? new Date(Number(post.timestamp) * 1000).toLocaleDateString() : "Unknown date"}</p>
 
       <button onClick={togglelikes}>
         {hasLiked ? "💔 Unlike" : "❤️ Like"}
