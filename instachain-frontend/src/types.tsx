@@ -27,4 +27,5 @@ export type Post = {
   ipfsHash: string;
   likes: number;
   hasLiked: boolean;
+  username?: string; // Optional username field
 };

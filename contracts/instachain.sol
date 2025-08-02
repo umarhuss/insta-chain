@@ -48,6 +48,9 @@ contract InstaChain {
     // Counter to keep track of comments
     uint public commentCount;
 
+    // Mapping to store address to users
+    mapping(address => string) public usernames;
+
     // Event to emit when a comment is added
     // indexed parameters are used to filter events in the UI
     event CommentAdded(
@@ -280,5 +283,21 @@ contract InstaChain {
     // Remove friends functionality
     function removeFriend(address _currentUser, address _friend) public {
         areFriends[_currentUser][_friend] = false;
+    }
+
+    // Function to set user name
+    function registerUsername(string memory _username) public {
+        require(
+            bytes(usernames[msg.sender]).length == 0,
+            "Username already set"
+        );
+        require(bytes(_username).length > 0, "Username cannot be empty");
+
+        usernames[msg.sender] = _username;
+    }
+
+    // Function to get username by address
+    function getUsername(address user) public view returns (string memory) {
+        return usernames[user];
     }
 }

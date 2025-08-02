@@ -2,40 +2,58 @@ import { useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    ethereum?: any;
+    ethereum?: {
+      request: (args: { method: string; params?: any[] }) => Promise<any>;
+      on: (event: string, callback: (params: any) => void) => void;
+      removeListener: (event: string, callback: (params: any) => void) => void;
+    };
   }
 }
 
 export default function useWallet() {
-    // Set up state to hold the Wallet address
     const [walletAddress, setWalletAddress] = useState<string | null>(null);
+    const [isConnecting, setIsConnecting] = useState<boolean>(false);
 
-    // Use effect to check if wallet is connected async
     useEffect(() => {
-        // check if metaMask is installed
-        const checkWalletConnection = async () => {
-            if (!window.ethereum){
+        const checkWalletConnection = async (): Promise<void> => {
+            if (!window.ethereum) {
+                console.log("🔄 No MetaMask available");
                 return;
             }
-            // Check if the user is already connected to a wallet
+
+            // Check if user has logged out
+            const loggedOut = localStorage.getItem('loggedOut') === 'true';
+            if (loggedOut) {
+                console.log("🔄 Skipping wallet check - user logged out");
+                return;
+            }
+
             try {
-                // if so setwalletAddress to the first account in the array
-                const accounts = await window.ethereum.request({ method: 'eth_accounts'}) as string[];
-                if (accounts.length > 0){
+                console.log("🔄 Checking for existing MetaMask connection...");
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' }) as string[];
+                console.log("📋 Found accounts:", accounts);
+
+                if (accounts.length > 0) {
+                    console.log("✅ Setting wallet address to:", accounts[0]);
                     setWalletAddress(accounts[0]);
+                    console.log("🔄 Wallet address set, should trigger re-render");
+                } else {
+                    console.log("❌ No accounts found");
+                    setWalletAddress(null);
                 }
             } catch (error) {
                 console.error("Error checking wallet connection:", error);
+                setWalletAddress(null);
             }
         };
-        // Call the function to check wallet connection
+
         checkWalletConnection();
     }, []);
-    // Listen for account changes (e.g., when user switches in MetaMask)
+
     useEffect(() => {
         if (!window.ethereum) return;
 
-        const handleAccountsChanged = (accounts: string[]) => {
+        const handleAccountsChanged = (accounts: string[]): void => {
             if (accounts.length > 0) {
                 setWalletAddress(accounts[0]);
                 console.log("🔄 Account changed to:", accounts[0]);
@@ -48,29 +66,74 @@ export default function useWallet() {
         window.ethereum.on("accountsChanged", handleAccountsChanged);
 
         return () => {
-            window.ethereum.removeListener("accountsChanged", handleAccountsChanged);
+            window.ethereum?.removeListener("accountsChanged", handleAccountsChanged);
         };
     }, []);
-    // Function to connect to the wallet
-    const connectWallet = async () => {
-        // Check if metaMask is installed
-        if (!window.ethereum){
+
+    const connectWallet = async (): Promise<void> => {
+        if (!window.ethereum) {
             alert('MetaMask must be installed to use this app.');
             return;
         }
-        // then try request user to connect to their wallet via a button
+
         try {
+            setIsConnecting(true);
+
+            // Clear the logout flag when connecting
+            localStorage.removeItem('loggedOut');
+
+            console.log("🔄 Requesting MetaMask connection...");
+
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) as string[];
+
             if (accounts.length > 0) {
                 setWalletAddress(accounts[0]);
+                console.log("✅ Wallet connected:", accounts[0]);
+
+                // Force a page reload to ensure the app transitions properly
+                console.log("🔄 Forcing page reload to trigger transition...");
+                window.location.reload();
+            } else {
+                console.log("❌ No accounts found");
             }
         } catch (error) {
             console.error("Error connecting to wallet:", error);
+            throw error;
+        } finally {
+            setIsConnecting(false);
         }
     };
 
-    return { walletAddress, connectWallet };
+    const disconnectWallet = async (): Promise<void> => {
+        console.log("🔄 Logging out...");
 
+        // Clear the wallet address
+        setWalletAddress(null);
+
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Set a flag to prevent auto-reconnection
+        localStorage.setItem('loggedOut', 'true');
+
+        console.log("✅ Logout completed - redirecting...");
+
+        // Force redirect to home page
+        window.location.href = "/";
+    };
+
+    // Debug effect to log wallet address changes
+    useEffect(() => {
+        console.log("🔄 Wallet address changed to:", walletAddress);
+    }, [walletAddress]);
+
+    return {
+        walletAddress,
+        connectWallet,
+        disconnectWallet,
+        isConnecting
+    };
 }
 
 

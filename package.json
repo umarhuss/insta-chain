@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy:local": "npx hardhat run scripts/deploy.js",
+    "compile": "npx hardhat compile",
+    "node": "npx hardhat node",
+    "test:contract": "npx hardhat test"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +24,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
     "abbrev": "^1.0.9",
     "acorn": "^8.15.0",
     "acorn-walk": "^8.3.4",
@@ -108,6 +113,7 @@
     "diff": "^5.2.0",
     "difflib": "^0.2.4",
     "dir-glob": "^3.0.1",
+    "dotenv": "^17.2.1",
     "dunder-proto": "^1.0.1",
     "elliptic": "^6.6.1",
     "emoji-regex": "^8.0.0",

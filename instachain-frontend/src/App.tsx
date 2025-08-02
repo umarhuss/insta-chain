@@ -1,18 +1,20 @@
 import React from 'react';
 import { BrowserRouter } from "react-router-dom";
-import useWallet from './hooks/useWallet';
+import './App.css';
 import AuthenticatedApp from './AuthenticatedApp';
+import { ThemeProvider } from './contexts/ThemeContext';
+import useWallet from './hooks/useWallet';
 import Home from './pages/Home';
 
 const App: React.FC = () => {
   const { walletAddress } = useWallet();
 
-  console.log("Wallet address:", walletAddress);
   return (
-    <BrowserRouter>
-    {      /* Render AuthenticatedApp if walletAddress is not null, otherwise render Home */}
-      {walletAddress !== null ? <AuthenticatedApp /> : <Home />}
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        {walletAddress !== null ? <AuthenticatedApp /> : <Home />}
+      </BrowserRouter>
+    </ThemeProvider>
   );
 };
 
