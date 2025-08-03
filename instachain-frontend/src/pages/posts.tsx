@@ -107,20 +107,21 @@ const Posts: React.FC = () => {
     }
   };
 
-  const handleAddComment = async (postId: number, commentText: string) => {
-    try {
-      const provider = new BrowserProvider(window.ethereum!);
-      const signer = await provider.getSigner();
-      const contract = await getContract(signer);
-      const tx = await contract.addComment(postId, commentText);
-      await tx.wait();
+  // Comment functionality temporarily disabled
+  // const handleAddComment = async (postId: number, commentText: string) => {
+  //   try {
+  //     const provider = new BrowserProvider(window.ethereum!);
+  //     const signer = await provider.getSigner();
+  //     const contract = await getContract(signer);
+  //     const tx = await contract.addComment(postId, commentText);
+  //     await tx.wait();
 
-      // Refresh posts to get updated comments
-      fetchUserPosts();
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
-  };
+  //     // Refresh posts to get updated comments
+  //     fetchUserPosts();
+  //   } catch (error) {
+  //     console.error('Error adding comment:', error);
+  //   }
+  // };
 
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp * 1000);

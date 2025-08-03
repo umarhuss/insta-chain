@@ -48,8 +48,8 @@ const PostCard: React.FC<props> = ({post, comments, handleAddComment}) => {
     const cloudflareUrl = `https://cloudflare-ipfs.com/ipfs/${post.ipfsHash}`;
     const dwebUrl = `https://dweb.link/ipfs/${post.ipfsHash}`;
 
-    // Temporary test image for debugging
-    const testImageUrl = "https://picsum.photos/300/200?random=1";
+    // Temporary test image for debugging (commented out)
+    // const testImageUrl = "https://picsum.photos/300/200?random=1";
 
     console.log("🖼️ Post media debug:", {
         ipfsHash: post.ipfsHash,
