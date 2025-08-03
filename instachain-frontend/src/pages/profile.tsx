@@ -30,7 +30,7 @@ const Profile: React.FC = () => {
       setFetchingUsername(true);
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
       const user = await contract.getUsername(walletAddress);
       if (user && user !== '') {
         setUsername(user);
@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
       setLoading(true);
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
       const tx = await contract.registerUsername(newUsername.trim());
       await tx.wait();
 

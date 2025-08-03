@@ -22,7 +22,7 @@ const Posts: React.FC = () => {
       setLoading(true);
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
 
       // Get user's address
       const userAddress = await signer.getAddress();
@@ -111,7 +111,7 @@ const Posts: React.FC = () => {
     try {
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
       const tx = await contract.addComment(postId, commentText);
       await tx.wait();
 
