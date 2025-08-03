@@ -195,12 +195,12 @@ const CreatePost: React.FC<Props> = ({ onPostCreated, isOpen, onClose }) => {
                     <img
                       src={previewUrl}
                       alt="Preview"
-                      className="max-h-48 rounded-lg mx-auto mb-4"
+                      className="max-h-48 max-w-full rounded-lg mx-auto mb-4 object-contain"
                     />
                   ) : (
                     <video
                       src={previewUrl}
-                      className="max-h-48 rounded-lg mx-auto mb-4"
+                      className="max-h-48 max-w-full rounded-lg mx-auto mb-4"
                       controls
                     />
                   )}

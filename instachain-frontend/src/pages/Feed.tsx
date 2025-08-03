@@ -18,17 +18,34 @@ const Feed: React.FC = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const handleAddComment = (postId: number, commentText: string) => {
-    const newComment: Comment = {
-      commentId: Date.now(),
-      commenter: walletAddress
-        ? `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
-        : "Anonymous",
-      comment: commentText,
-      timestamp: new Date().toISOString(),
-      postId,
-    };
-    setComments((prev) => [...prev, newComment]);
+  const handleAddComment = async (postId: number, commentText: string) => {
+    try {
+      // Fetch username for the current user
+      const provider = new BrowserProvider(window.ethereum!);
+      const signer = await provider.getSigner();
+      const contract = await getContract(signer);
+      const username = await contract.getUsername(walletAddress);
+
+      const newComment: Comment = {
+        commentId: Date.now(),
+        commenter: username || formatAddress(walletAddress || ""), // Use username if available, otherwise format address
+        comment: commentText,
+        timestamp: new Date().toISOString(),
+        postId,
+      };
+      setComments((prev) => [...prev, newComment]);
+    } catch (error) {
+      console.error('Error fetching username for comment:', error);
+      // Fallback to formatted address if username fetch fails
+      const newComment: Comment = {
+        commentId: Date.now(),
+        commenter: formatAddress(walletAddress || ""),
+        comment: commentText,
+        timestamp: new Date().toISOString(),
+        postId,
+      };
+      setComments((prev) => [...prev, newComment]);
+    }
   };
 
   const loadFeed = async () => {

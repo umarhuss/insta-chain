@@ -356,6 +356,19 @@
   padding: var(--space-4);
 }
 
+/* Create Post Modal specific styles */
+.modal-body .file-upload {
+  max-width: 100%;
+}
+
+.modal-body .file-upload img,
+.modal-body .file-upload video {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+}
+
 .modal-footer {
   padding: 0 var(--space-4) var(--space-4);
   display: flex;
