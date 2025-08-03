@@ -53,6 +53,13 @@ const Feed: React.FC = () => {
       setLoading(true);
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
+
+      // Check network
+      const network = await provider.getNetwork();
+      console.log("🌐 Network Debug:");
+      console.log("  Chain ID:", network.chainId.toString(16));
+      console.log("  Network Name:", network.name);
+
       const contract = await getContract(signer);
       if (!walletAddress) return;
       const userAddress = await signer.getAddress();

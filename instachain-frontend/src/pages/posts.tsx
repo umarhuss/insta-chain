@@ -22,7 +22,7 @@ const Posts: React.FC = () => {
       setLoading(true);
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
 
       // Get user's address
       const userAddress = await signer.getAddress();
@@ -107,20 +107,18 @@ const Posts: React.FC = () => {
     }
   };
 
-  const handleAddComment = async (postId: number, commentText: string) => {
-    try {
-      const provider = new BrowserProvider(window.ethereum!);
-      const signer = await provider.getSigner();
-      const contract = getContract(signer);
-      const tx = await contract.addComment(postId, commentText);
-      await tx.wait();
-
-      // Refresh posts to get updated comments
-      fetchUserPosts();
-    } catch (error) {
-      console.error('Error adding comment:', error);
-    }
-  };
+  // const handleAddComment = async (postId: number, commentText: string) => {
+  //   try {
+  //     const provider = new BrowserProvider(window.ethereum!);
+  //     const signer = await provider.getSigner();
+  //     const contract = await getContract(signer);
+  //     const tx = await contract.addComment(postId, commentText);
+  //     await tx.wait();
+  //     fetchUserPosts();
+  //   } catch (error) {
+  //     console.error('Error adding comment:', error);
+  //   }
+  // };
 
   const formatTimestamp = (timestamp: number) => {
     const date = new Date(timestamp * 1000);

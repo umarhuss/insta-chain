@@ -137,7 +137,7 @@ const CreatePost: React.FC<Props> = ({ onPostCreated, isOpen, onClose }) => {
       setUploadProgress('Creating post on blockchain...');
       const provider = new BrowserProvider(window.ethereum!);
       const signer = await provider.getSigner();
-      const contract = getContract(signer);
+      const contract = await getContract(signer);
 
       const tx = await contract.createPost(caption, userLocation, ipfsHash);
       await tx.wait();

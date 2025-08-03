@@ -49,7 +49,7 @@ const PostCard: React.FC<props> = ({post, comments, handleAddComment}) => {
     const dwebUrl = `https://dweb.link/ipfs/${post.ipfsHash}`;
 
     // Temporary test image for debugging
-    const testImageUrl = "https://picsum.photos/300/200?random=1";
+    // const testImageUrl = "https://picsum.photos/300/200?random=1";
 
     console.log("🖼️ Post media debug:", {
         ipfsHash: post.ipfsHash,

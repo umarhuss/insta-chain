@@ -1,81 +1,77 @@
-# InstaChain 📸
+# InstaChain - Decentralized Social Media Platform
 
-A Decentralised Instagram Clone on the Blockchain
+A decentralized social media platform built on Ethereum that allows users to create posts, like, comment, and interact with friends on the blockchain.
 
-InstaChain is a decentralized Instagram-style photo-sharing application built with **Solidity**, **Hardhat**, **React**, and **TypeScript**. Users can connect their MetaMask wallet, create image posts with captions, and view a personalised feed made up of their own posts and those of their on-chain friends.
+## 🚀 Live Demo
 
-> 💡 This project was created as part of a learning journey into full-stack Web3 development. It leverages smart contracts for on-chain data handling and uses a modern frontend built with React and TypeScript.
+-   **Frontend**: [Your GitHub Pages URL will go here]
+-   **Smart Contract**: [0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb](https://sepolia.etherscan.io/address/0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb)
+-   **Network**: Sepolia Testnet
 
----
+## 🎯 Features
 
-## 🚀 Features
+-   ✅ **Create Posts** - Upload images/videos to IPFS and post to blockchain
+-   ✅ **Like Posts** - Like and unlike posts with on-chain verification
+-   ✅ **Comment System** - Add comments and replies to posts
+-   ✅ **Friend System** - Add friends and see their posts in your feed
+-   ✅ **User Profiles** - Set usernames and view user information
+-   ✅ **Decentralized Storage** - All media stored on IPFS
+-   ✅ **Real-time Updates** - Live feed updates from blockchain
 
-### Core Functionality
+## 🛠️ Tech Stack
 
--   📷 **Post Images with Captions** - Upload and share images with IPFS storage
--   🧑‍🤝‍🧑 **Add Friends On-Chain** - Build your social network on the blockchain
--   📰 **Personalised Feed** - View posts from you and your friends
--   💬 **Add Comments** - Engage with posts through comments (frontend state for optimal UX)
--   🔐 **MetaMask Wallet Connection** - Secure Web3 authentication
-
-### User Experience
-
--   👤 **Username System** - Set custom usernames instead of showing wallet addresses
--   🌓 **Dark/Light Mode** - Toggle between themes with persistent preferences
--   📱 **Responsive Design** - Works seamlessly on desktop and mobile
--   🎨 **Modern UI/UX** - Instagram-inspired design with smooth animations
--   🔄 **Loading States** - Visual feedback for all interactions
-
-### Advanced Features
-
--   📁 **Modal Interfaces** - Clean modal dialogs for post creation and username setting
--   🖼️ **Dynamic Image Sizing** - Images automatically resize to fit properly
--   🎯 **Hover Effects** - Interactive elements with smooth transitions
--   📍 **User Posts Page** - Dedicated page to view your own posts
--   🚪 **Logout Functionality** - Proper session management
--   🔄 **Fresh Start Support** - Clean blockchain resets for development
-
----
-
-## 🛠 Tech Stack
-
-| Layer              | Stack                        |
-| ------------------ | ---------------------------- |
-| **Frontend**       | React, TypeScript, Vite      |
-| **Smart Contract** | Solidity, Hardhat, Ethers.js |
-| **Wallet**         | MetaMask                     |
-| **Storage**        | IPFS (via Pinata)            |
-| **State Mgmt**     | React Hooks, Context API     |
-| **Styling**        | CSS3, Custom Design System   |
-| **Dev Tools**      | Hardhat, VSCode, Git, GitHub |
-
----
-
-## 🏗️ Architecture Decisions
-
-### Hybrid Storage Approach
-
--   **Posts**: Stored on-chain for permanence and decentralization
--   **Comments**: Stored in frontend state for optimal user experience
--   **Images**: Stored on IPFS for decentralized file storage
--   **Usernames**: Stored on-chain for global uniqueness
-
-### Why This Approach?
-
--   **Posts are permanent** - Survive blockchain restarts and server crashes
--   **Comments are fast** - Instant feedback without gas fees
--   **Future-ready** - Comments can be moved on-chain in future versions
--   **User-friendly** - Balances decentralization with practical UX
-
----
+-   **Frontend**: React + TypeScript + Vite
+-   **Blockchain**: Ethereum (Sepolia Testnet)
+-   **Smart Contract**: Solidity
+-   **Storage**: IPFS (InterPlanetary File System)
+-   **Wallet Integration**: MetaMask
+-   **Styling**: CSS + Tailwind CSS
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
+1. **MetaMask Wallet** - [Download here](https://metamask.io/)
+2. **Test ETH** - Get free test ETH from faucets
+3. **Modern Browser** - Chrome, Firefox, Safari, or Edge
+
+### Setup Instructions
+
+#### 1. Get Test ETH
+
+You'll need test ETH to interact with the dApp:
+
+-   **Google Cloud Faucet**: [https://cloud.google.com/application/web3/faucet/ethereum/sepolia](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+-   **Sepolia Faucet**: [https://sepoliafaucet.com/](https://sepoliafaucet.com/)
+-   **Chainlink Faucet**: [https://faucets.chain.link/sepolia](https://faucets.chain.link/sepolia)
+
+#### 2. Connect Your Wallet
+
+1. **Install MetaMask** if you haven't already
+2. **Add Sepolia Network** to MetaMask:
+    - Network Name: `Sepolia`
+    - RPC URL: `https://sepolia.infura.io/v3/YOUR-PROJECT-ID`
+    - Chain ID: `11155111`
+    - Currency Symbol: `ETH`
+3. **Get test ETH** from one of the faucets above
+4. **Connect your wallet** to the dApp
+
+#### 3. Start Using InstaChain
+
+1. **Visit the live demo** (link will be added after deployment)
+2. **Connect your MetaMask wallet**
+3. **Create your first post** by clicking "Create Post"
+4. **Upload an image/video** and add a caption
+5. **Submit the transaction** and approve in MetaMask
+6. **View your post** in the feed!
+
+## 🏗️ Development Setup
+
+### Prerequisites
+
 -   Node.js (v16 or higher)
--   MetaMask browser extension
--   Pinata account (for IPFS storage)
+-   npm or yarn
+-   MetaMask wallet
 
 ### Installation
 
@@ -97,53 +93,98 @@ InstaChain is a decentralized Instagram-style photo-sharing application built wi
 3. **Set up environment variables**
 
     ```bash
-    cd instachain-frontend
-    cp .env.example .env
-    # Add your Pinata JWT token to .env
+    cp env.example .env
+    # Edit .env with your API keys
     ```
 
-4. **Start the development environment**
+4. **Deploy to testnet**
 
     ```bash
-    # Terminal 1: Start Hardhat node
-    npx hardhat node
+    npm run deploy:sepolia
+    ```
 
-    # Terminal 2: Deploy contract
-    npx hardhat run scripts/deploy.js --network localhost
-
-    # Terminal 3: Start frontend
+5. **Start the frontend**
+    ```bash
     cd instachain-frontend
     npm run dev
     ```
 
-5. **Connect MetaMask**
+## 📋 Smart Contract Functions
 
-    - Open MetaMask
-    - Add network: `http://localhost:8545`
-    - Import one of the test accounts from the Hardhat output
+### Core Functions
 
-6. **Visit the app**
-    - Open `http://localhost:5173`
-    - Connect your wallet and start posting!
+-   `createPost(string caption, string location, string ipfsHash)` - Create a new post
+-   `likePost(uint256 postId)` - Like/unlike a post
+-   `addComment(uint256 postId, string comment, uint256 replyTo)` - Add a comment
+-   `addFriends(address friend)` - Add a friend
+-   `setUsername(string username)` - Set your username
 
-### Fresh Start Development
+### View Functions
 
-To completely reset the blockchain and start fresh:
+-   `getUserAndFriendsPosts(address user)` - Get posts from user and friends
+-   `getLikeCount(uint256 postId)` - Get like count for a post
+-   `hasUserLikedPost(address user, uint256 postId)` - Check if user liked post
+-   `getUsername(address user)` - Get username for an address
 
-```bash
-# Kill all processes
-pkill -f "hardhat" && pkill -f "vite"
+## 🔗 Contract Information
 
-# Start fresh
-npx hardhat node
-npx hardhat run scripts/deploy.js --network localhost
-cd instachain-frontend && npm run dev
+-   **Contract Address**: `0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb`
+-   **Network**: Sepolia Testnet
+-   **Etherscan**: [https://sepolia.etherscan.io/address/0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb](https://sepolia.etherscan.io/address/0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb)
+-   **ABI**: Available in `instachain-frontend/src/utils/InstaChainABI.json`
+
+## 🎯 Project Structure
+
 ```
+instachain/
+├── contracts/
+│   └── instachain.sol          # Smart contract
+├── instachain-frontend/
+│   ├── src/
+│   │   ├── components/         # React components
+│   │   ├── pages/             # Page components
+│   │   ├── utils/             # Contract utilities
+│   │   └── contexts/          # React contexts
+│   └── public/                # Static assets
+├── scripts/
+│   ├── deploy.js              # Deployment script
+│   └── syncFrontend.js        # Frontend sync script
+└── test/                      # Contract tests
+```
+
+## 🚀 Deployment
+
+### Smart Contract
+
+The smart contract is deployed on Sepolia testnet and verified on Etherscan.
+
+### Frontend
+
+The frontend can be deployed to:
+
+-   **GitHub Pages** (recommended for demos)
+-   **Netlify** (easy deployment)
+-   **Vercel** (great for React apps)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+-   Ethereum Foundation for the Sepolia testnet
+-   IPFS for decentralized storage
+-   MetaMask for wallet integration
+-   Google Cloud for the testnet faucet
 
 ---
 
-## 📁 Project Structure
-
-```
-
-```
+**Ready to experience decentralized social media? Connect your wallet and start posting! 🚀**

@@ -5,9 +5,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy:local": "npx hardhat run scripts/deploy.js",
+    "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
+    "deploy:goerli": "npx hardhat run scripts/deploy.js --network goerli",
     "compile": "npx hardhat compile",
     "node": "npx hardhat node",
-    "test:contract": "npx hardhat test"
+    "test:contract": "npx hardhat test",
+    "verify:sepolia": "npx hardhat verify --network sepolia",
+    "verify:goerli": "npx hardhat verify --network goerli"
   },
   "keywords": [],
   "author": "",
