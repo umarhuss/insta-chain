@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Feed from "./pages/Feed";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile";
 import Posts from "./pages/posts";
 
 const AuthenticatedApp: React.FC = () => {
