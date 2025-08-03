@@ -77,6 +77,27 @@ InstaChain is a decentralized Instagram-style photo-sharing application built wi
 -   MetaMask browser extension
 -   Pinata account (for IPFS storage)
 
+## 🌐 Testnet Deployment
+
+This dApp is also deployed on **Sepolia Testnet**:
+
+- **Contract Address**: `0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb`
+- **Etherscan**: [View Contract](https://sepolia.etherscan.io/address/0x53D5f0b318cD08cf6c0C84d811139a0294F4Cfbb)
+- **Network**: Sepolia Testnet
+
+### To use the testnet version:
+1. Connect MetaMask to Sepolia network
+2. Get test ETH from a faucet (see links below)
+3. The dApp will automatically connect to the deployed contract
+
+### Testnet Faucets:
+- **Google Cloud Faucet**: [https://cloud.google.com/application/web3/faucet/ethereum/sepolia](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+- **Sepolia Faucet**: [https://sepoliafaucet.com/](https://sepoliafaucet.com/)
+- **Chainlink Faucet**: [https://faucets.chain.link/sepolia](https://faucets.chain.link/sepolia)
+
+### Local Development:
+For development and testing, run `npm run dev` for local deployment.
+
 ### Installation
 
 1. **Clone the repository**
